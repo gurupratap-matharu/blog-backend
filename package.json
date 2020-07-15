@@ -1,0 +1,17 @@
+{
+  "name": "blog-backend",
+  "version": "1.0.0",
+  "description": "A node js based RestAPI app to store information about awesome mindblowing blogs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "Blog",
+    "node",
+    "rest",
+    "backend"
+  ],
+  "author": "Gurupratap Singh Matharu",
+  "license": "MIT"
+}
