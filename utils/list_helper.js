@@ -4,7 +4,7 @@ const dummy = (blogs) => {
 
 const totalLikes = (blogs) => {
     const reducer = (accumulator, currentValue) => accumulator + currentValue
-    return blogs.map(blog => blog.likes).reduce(reducer)
+    return blogs.map(blog => blog.likes).reduce(reducer, 0)
 
 }
 
