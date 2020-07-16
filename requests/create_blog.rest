@@ -2,8 +2,8 @@ POST http://localhost:3003/api/blog
 Content-Type: application/json
 
 {
-    "title": "Wonderful life",
-    "author": "Inderpal Singh",
-    "url": "https://myblog.com/wonderful-life",
-    "likes": "50"
+    "title": "An awesome day",
+    "author": "Harjinder Kaur",
+    "url": "https://myblog.com/an-awesome-day",
+    "likes": "5"
 }
