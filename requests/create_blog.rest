@@ -2,8 +2,8 @@ POST http://localhost:3003/api/blog
 Content-Type: application/json
 
 {
-    "title": "An awesome day",
-    "author": "Harjinder Kaur",
-    "url": "https://myblog.com/an-awesome-day",
-    "likes": "5"
+    "title": "In the darkest of the times you'll see the brightest of the stars!",
+    "author": "Veerpratap Singh",
+    "url": "https://myblog.com/darkest-times",
+    "likes": "1"
 }

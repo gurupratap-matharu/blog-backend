@@ -1,5 +1,8 @@
-GET http://localhost:3003/api/blogs/5f10893a0da3ef266bc303cf
+GET http://localhost:3003/api/blog/5f10893a0da3ef266bc303cf
 
 ###
-GET http://localhost:3003/api/blogs/5f1089580da3ef266bc303d2
+GET http://localhost:3003/api/blog/5f1089580da3ef266bc303d2
+###
+
+GET http://localhost:3003/api/blog/5f14ba9264be9ced01174638
 
