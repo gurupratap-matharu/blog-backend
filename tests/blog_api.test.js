@@ -234,6 +234,34 @@ describe('DELETE: deletion of a blog', () => {
         expect(urls).not.toContain(blogToDelete.url)
 
     })
+
+    test('fails with statuscode 400 if id is invalid', async () => {
+        const invalidId = '3245325645tergdfgewrt43565464ert'
+        const blogsAtStart = await helper.blogsInDb()
+
+        await api
+            .delete(`/api/blogs/${invalidId}`)
+            .expect(400)
+
+        const blogsAtEnd = await helper.blogsInDb()
+
+        expect(blogsAtEnd).toHaveLength(blogsAtStart.length)
+        expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length)
+    })
+
+    test('fails with statuscode 204 if blog does not exist', async () => {
+        const nonExistingId = await helper.nonExistingId()
+        const blogsAtStart = await helper.blogsInDb()
+
+        await api
+            .delete(`/api/blogs/${nonExistingId}`)
+            .expect(204)
+
+        const blogsAtEnd = await helper.blogsInDb()
+
+        expect(blogsAtEnd).toHaveLength(blogsAtStart.length)
+        expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length)
+    })
 })
 
 afterAll(() => {
