@@ -102,7 +102,7 @@ describe('POST: addition of a new blog', () => {
         expect(urls).toContain('www.australia.com')
     })
 
-    test('fails with statuscode 400 if data invalid', async () => {
+    test('fails with statuscode 400 if no title in data', async () => {
         const blogsAtStart = await helper.blogsInDb()
         const newBlog = {
             author: 'Amrita Kaur Matharu',
@@ -120,6 +120,63 @@ describe('POST: addition of a new blog', () => {
         expect(blogsAtEnd).toHaveLength(blogsAtStart.length)
         expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length)
     })
+    test('fails with statuscode 400 if no author in data', async () => {
+        const blogsAtStart = await helper.blogsInDb()
+        const newBlog = {
+            title: 'My Amazing brother',
+            url: 'www.australia.com',
+            likes: 5001
+        }
+
+        await api
+            .post('/api/blogs')
+            .send(newBlog)
+            .expect(400)
+
+        const blogsAtEnd = await helper.blogsInDb()
+        expect(blogsAtEnd).toEqual(blogsAtStart)
+        expect(blogsAtEnd).toHaveLength(blogsAtStart.length)
+        expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length)
+    })
+
+    test('fails with statuscode 400 if no url in data', async () => {
+        const blogsAtStart = await helper.blogsInDb()
+        const newBlog = {
+            author: 'Amrita Kaur Matharu',
+            title: 'My Amazing brother',
+            likes: 5001
+        }
+
+        await api
+            .post('/api/blogs')
+            .send(newBlog)
+            .expect(400)
+
+        const blogsAtEnd = await helper.blogsInDb()
+        expect(blogsAtEnd).toEqual(blogsAtStart)
+        expect(blogsAtEnd).toHaveLength(blogsAtStart.length)
+        expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length)
+    })
+
+    test('fails with statuscode 400 if no likes in data', async () => {
+        const blogsAtStart = await helper.blogsInDb()
+        const newBlog = {
+            author: 'Amrita Kaur Matharu',
+            title: 'My Amazing brother',
+            url: 'www.australia.com',
+        }
+
+        await api
+            .post('/api/blogs')
+            .send(newBlog)
+            .expect(400)
+
+        const blogsAtEnd = await helper.blogsInDb()
+        expect(blogsAtEnd).toEqual(blogsAtStart)
+        expect(blogsAtEnd).toHaveLength(blogsAtStart.length)
+        expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length)
+    })
+
 })
 afterAll(() => {
     mongoose.connection.close()
