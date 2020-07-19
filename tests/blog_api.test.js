@@ -21,6 +21,7 @@ describe('when there are initially some blogs saved', () => {
         const response = await api.get('/api/blogs')
         expect(response.body).toHaveLength(helper.initialBlogs.length)
     })
+
     test('blogs are returned as json', async () => {
         await api
             .get('/api/blogs')
@@ -37,6 +38,44 @@ describe('when there are initially some blogs saved', () => {
     })
 })
 
+describe('GET:viewing a specific blog', () => {
+    test('succeeds with statuscode 200 for a valid id', async () => {
+        const blogsAtStart = await helper.blogsInDb()
+        const blogToView = blogsAtStart[0]
+
+        const resultBlog = await api
+            .get(`/api/blogs/${blogToView.id}`)
+            .expect(200)
+            .expect('Content-Type', /application\/json/)
+
+        expect(resultBlog.body.author).toEqual(blogToView.author)
+        expect(resultBlog.body.likes).toEqual(blogToView.likes)
+        expect(resultBlog.body.title).toEqual(blogToView.title)
+
+    })
+
+    test('fails with statuscode 400 for an invalid id', async () => {
+        const invalidId = '4dwgw3463tbdfgret3456346f'
+
+        await api
+            .get(`/api/blogs/${invalidId}`)
+            .expect(400)
+    })
+
+    test('fails with statuscode 404 for a non-existing blog but valid id', async () => {
+        const blogsAtStart = await helper.blogsInDb()
+        const nonExistingId = await helper.nonExistingId()
+
+        await api
+            .get(`/api/blogs/${nonExistingId}`)
+            .expect(404)
+
+        const blogsAtEnd = await helper.blogsInDb()
+
+        expect(blogsAtEnd).toEqual(blogsAtStart)
+
+    })
+})
 afterAll(() => {
     mongoose.connection.close()
 })
