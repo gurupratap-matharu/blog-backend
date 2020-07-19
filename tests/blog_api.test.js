@@ -76,6 +76,36 @@ describe('GET:viewing a specific blog', () => {
 
     })
 })
+
+describe('POST: addition of a new blog', () => {
+    test('succeeds with valid data', async () => {
+
+        const blogsAtStart = await helper.blogsInDb()
+        const newBlog = {
+            title: 'My amazing Brother',
+            author: 'Amrita Kaur Matharu',
+            url: 'www.australia.com',
+            likes: 5001
+        }
+        await api
+            .post('/api/blogs')
+            .send(newBlog)
+            .expect(201)
+            .expect('Content-Type', /application\/json/)
+
+        const blogsAtEnd = await helper.blogsInDb()
+        const titles = blogsAtEnd.map(blog => blog.title)
+        const urls = blogsAtEnd.map(blog => blog.url)
+
+        expect(blogsAtEnd).toHaveLength(blogsAtStart.length + 1)
+        expect(titles).toContain('My amazing Brother')
+        expect(urls).toContain('www.australia.com')
+    })
+
+    test('fails with statuscode 400 if data invalid', async () => {
+
+    })
+})
 afterAll(() => {
     mongoose.connection.close()
 })
