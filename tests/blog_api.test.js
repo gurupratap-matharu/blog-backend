@@ -19,19 +19,19 @@ beforeEach(async () => {
 describe('when there are initially some blogs saved', () => {
     test('all blogs are returned', async () => {
 
-        const response = await api.get('/api/blogs')
+        const response = await api.get('/api/blog')
         expect(response.body).toHaveLength(helper.initialBlogs.length)
     })
 
     test('blogs are returned as json', async () => {
         await api
-            .get('/api/blogs')
+            .get('/api/blog')
             .expect(200)
             .expect('Content-Type', /application\/json/)
     })
 
     test('a specific blog is within the returned blogs', async () => {
-        const response = await api.get('/api/blogs')
+        const response = await api.get('/api/blog')
         const contents = response.body.map(blog => blog.title)
 
         expect(contents).toContain('My favorite Son')
@@ -45,7 +45,7 @@ describe('GET:viewing a specific blog', () => {
         const blogToView = blogsAtStart[0]
 
         const resultBlog = await api
-            .get(`/api/blogs/${blogToView.id}`)
+            .get(`/api/blog/${blogToView.id}`)
             .expect(200)
             .expect('Content-Type', /application\/json/)
 
@@ -59,7 +59,7 @@ describe('GET:viewing a specific blog', () => {
         const invalidId = '4dwgw3463tbdfgret3456346f'
 
         await api
-            .get(`/api/blogs/${invalidId}`)
+            .get(`/api/blog/${invalidId}`)
             .expect(400)
     })
 
@@ -68,7 +68,7 @@ describe('GET:viewing a specific blog', () => {
         const nonExistingId = await helper.nonExistingId()
 
         await api
-            .get(`/api/blogs/${nonExistingId}`)
+            .get(`/api/blog/${nonExistingId}`)
             .expect(404)
 
         const blogsAtEnd = await helper.blogsInDb()
@@ -89,7 +89,7 @@ describe('POST: addition of a new blog', () => {
             likes: 5001
         }
         await api
-            .post('/api/blogs')
+            .post('/api/blog')
             .send(newBlog)
             .expect(201)
             .expect('Content-Type', /application\/json/)
@@ -113,7 +113,7 @@ describe('POST: addition of a new blog', () => {
         }
 
         await api
-            .post('/api/blogs')
+            .post('/api/blog')
             .send(newBlog)
             .expect(400)
 
@@ -128,7 +128,7 @@ describe('POST: addition of a new blog', () => {
         const newBlog = {}
 
         await api
-            .post('/api/blogs')
+            .post('/api/blog')
             .send(newBlog)
             .expect(400)
 
@@ -147,7 +147,7 @@ describe('POST: addition of a new blog', () => {
         }
 
         await api
-            .post('/api/blogs')
+            .post('/api/blog')
             .send(newBlog)
             .expect(400)
 
@@ -165,7 +165,7 @@ describe('POST: addition of a new blog', () => {
         }
 
         await api
-            .post('/api/blogs')
+            .post('/api/blog')
             .send(newBlog)
             .expect(400)
 
@@ -184,7 +184,7 @@ describe('POST: addition of a new blog', () => {
         }
 
         await api
-            .post('/api/blogs')
+            .post('/api/blog')
             .send(newBlog)
             .expect(400)
 
@@ -203,7 +203,7 @@ describe('POST: addition of a new blog', () => {
         }
 
         await api
-            .post('/api/blogs')
+            .post('/api/blog')
             .send(newBlog)
             .expect(400)
 
@@ -220,7 +220,7 @@ describe('DELETE: deletion of a blog', () => {
         const blogsAtStart = await helper.blogsInDb()
         const blogToDelete = blogsAtStart[0]
         await api
-            .delete(`/api/blogs/${blogToDelete.id}`)
+            .delete(`/api/blog/${blogToDelete.id}`)
             .expect(204)
 
         const blogsAtEnd = await helper.blogsInDb()
@@ -240,7 +240,7 @@ describe('DELETE: deletion of a blog', () => {
         const blogsAtStart = await helper.blogsInDb()
 
         await api
-            .delete(`/api/blogs/${invalidId}`)
+            .delete(`/api/blog/${invalidId}`)
             .expect(400)
 
         const blogsAtEnd = await helper.blogsInDb()
@@ -254,7 +254,7 @@ describe('DELETE: deletion of a blog', () => {
         const blogsAtStart = await helper.blogsInDb()
 
         await api
-            .delete(`/api/blogs/${nonExistingId}`)
+            .delete(`/api/blog/${nonExistingId}`)
             .expect(204)
 
         const blogsAtEnd = await helper.blogsInDb()
