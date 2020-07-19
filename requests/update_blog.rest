@@ -3,7 +3,7 @@ Content-Type: application/json
 
 {
     "title": "In the darkest of the times you'll see the brightest of the stars!",
-    "author": "Veerpratap Singh",
+    "author": "Veerpratap",
     "url": "https://myblog.com/darkest-times",
     "likes": "5000"
 }
