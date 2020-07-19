@@ -103,7 +103,22 @@ describe('POST: addition of a new blog', () => {
     })
 
     test('fails with statuscode 400 if data invalid', async () => {
+        const blogsAtStart = await helper.blogsInDb()
+        const newBlog = {
+            author: 'Amrita Kaur Matharu',
+            url: 'www.australia.com',
+            likes: 5001
+        }
 
+        await api
+            .post('/api/blogs')
+            .send(newBlog)
+            .expect(400)
+
+        const blogsAtEnd = await helper.blogsInDb()
+        expect(blogsAtEnd).toEqual(blogsAtStart)
+        expect(blogsAtEnd).toHaveLength(blogsAtStart.length)
+        expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length)
     })
 })
 afterAll(() => {
