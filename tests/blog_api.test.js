@@ -5,7 +5,6 @@ const app = require('../app')
 
 const api = supertest(app)
 const Blog = require('../models/blog')
-const { initialBlogs } = require('./test_helper')
 
 beforeEach(async () => {
     await Blog.deleteMany({})
@@ -236,7 +235,7 @@ describe('DELETE: deletion of a blog', () => {
     })
 
     test('fails with statuscode 400 if id is invalid', async () => {
-        const invalidId = '3245325645tergdfgewrt43565464ert'
+        const invalidId = '4dwgw3463tbdfgret3456346f'
         const blogsAtStart = await helper.blogsInDb()
 
         await api
@@ -264,6 +263,24 @@ describe('DELETE: deletion of a blog', () => {
     })
 })
 
+describe('PUT:updating a blog', () => {
+    test('suceeds with statuscode 200 for valid new likes', async () => {
+        const blogsAtStart = await helper.blogsInDb()
+        const blogToUpdate = blogsAtStart[0]
+
+        const newBlog = { ...blogToUpdate, likes: 5000 }
+
+        const response = await api
+            .put(`/api/blog/${blogToUpdate.id}`)
+            .send(newBlog)
+            .expect(200)
+            .expect('Content-Type', /application\/json/)
+
+        expect(response.body).toEqual(newBlog)
+        expect(response.body.likes).toEqual(newBlog.likes)
+    })
+
+})
 afterAll(() => {
     mongoose.connection.close()
 })

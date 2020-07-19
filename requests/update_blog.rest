@@ -1,0 +1,9 @@
+PUT http://localhost:3003/api/blog/5f14c59380642ef32ddff587
+Content-Type: application/json
+
+{
+    "title": "In the darkest of the times you'll see the brightest of the stars!",
+    "author": "Veerpratap",
+    "url": "https://myblog.com/darkest-times",
+    "likes": "5000"
+}
