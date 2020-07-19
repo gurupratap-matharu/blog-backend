@@ -103,6 +103,41 @@ describe('POST: addition of a new blog', () => {
         expect(urls).toContain('www.australia.com')
     })
 
+    test('fails with statuscode 400 if no data at all', async () => {
+        const blogsAtStart = await helper.blogsInDb()
+        const newBlog = {
+            title: '',
+            author: '',
+            url: '',
+            likes: 0
+        }
+
+        await api
+            .post('/api/blogs')
+            .send(newBlog)
+            .expect(400)
+
+        const blogsAtEnd = await helper.blogsInDb()
+        expect(blogsAtEnd).toEqual(blogsAtStart)
+        expect(blogsAtEnd).toHaveLength(blogsAtStart.length)
+        expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length)
+    })
+
+    test('fails with statuscode 400 if empty object', async () => {
+        const blogsAtStart = await helper.blogsInDb()
+        const newBlog = {}
+
+        await api
+            .post('/api/blogs')
+            .send(newBlog)
+            .expect(400)
+
+        const blogsAtEnd = await helper.blogsInDb()
+        expect(blogsAtEnd).toEqual(blogsAtStart)
+        expect(blogsAtEnd).toHaveLength(blogsAtStart.length)
+        expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length)
+    })
+
     test('fails with statuscode 400 if no title in data', async () => {
         const blogsAtStart = await helper.blogsInDb()
         const newBlog = {
