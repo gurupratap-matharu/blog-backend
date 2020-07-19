@@ -5,6 +5,7 @@ const app = require('../app')
 
 const api = supertest(app)
 const Blog = require('../models/blog')
+const { initialBlogs } = require('./test_helper')
 
 beforeEach(async () => {
     await Blog.deleteMany({})
@@ -178,6 +179,28 @@ describe('POST: addition of a new blog', () => {
     })
 
 })
+
+describe('DELETE: deletion of a blog', () => {
+    test('succeeds with statuscode 204 if id is valid', async () => {
+        const blogsAtStart = await helper.blogsInDb()
+        const blogToDelete = blogsAtStart[0]
+        await api
+            .delete(`/api/blogs/${blogToDelete.id}`)
+            .expect(204)
+
+        const blogsAtEnd = await helper.blogsInDb()
+
+        const titles = blogsAtEnd.map(blog => blog.title)
+        const urls = blogsAtEnd.map(blog => blog.url)
+
+        expect(blogsAtEnd).toHaveLength(blogsAtStart.length - 1)
+        expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length - 1)
+        expect(titles).not.toContain(blogToDelete.title)
+        expect(urls).not.toContain(blogToDelete.url)
+
+    })
+})
+
 afterAll(() => {
     mongoose.connection.close()
 })
