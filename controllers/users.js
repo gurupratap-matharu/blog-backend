@@ -6,7 +6,7 @@ usersRouter.post('/', async (request, response) => {
     const body = request.body
 
     const saltRounds = 10
-    const passwordHash = bcrypt.hash(body.password, saltRounds)
+    const passwordHash = await bcrypt.hash(body.password, saltRounds)
 
     if (!(body.username && body.password)) {
         response.status(400).end()
