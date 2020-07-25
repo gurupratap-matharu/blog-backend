@@ -1,6 +1,5 @@
 const mongoose = require('mongoose')
 const uniqueValidator = require('mongoose-unique-validator')
-const usersRouter = require('../controllers/users')
 
 const userSchema = new mongoose.Schema({
     username: {
