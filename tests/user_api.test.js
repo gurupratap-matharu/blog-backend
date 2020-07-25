@@ -38,31 +38,83 @@ describe('when there is initially one user in db', () => {
         expect(usernames).toContain(newUser.username)
 
     })
-    // test('creation fails with proper statuscode for existing username', async () => {
 
-    //     console.log('todo')
-    // })
-    // test('creation fails with proper statuscode if no username', async () => {
-    //     console.log('todo')
-    // })
-    // test('creation fails with proper statuscode if no password', async () => {
-    //     console.log('todo')
+    test('creation fails with proper statuscode if username already exists', async () => {
+        const usersAtStart = await helper.usersInDb()
 
-    // })
-    // test('creation fails with proper statuscode if no data', async () => {
-    //     console.log('todo')
+        const newUser = {
+            name: 'root',
+            username: 'root-admin-user',
+            password: 'testpass123'
+        }
 
-    // })
-    // test('creation fails with proper statuscode if username length is invalid', async () => {
-    //     console.log('todo')
+        const result = await api
+            .post('/api/users')
+            .send(newUser)
+            .expect(400)
+            .expect('Content-Type', /application\/json/)
 
-    // })
-    // test('creation fails with proper statuscode if password length is invalid', async () => {
-    //     console.log('todo')
+        expect(result.body.error).toContain('`username` to be unique')
 
-    // })
-    // test('creation fails with proper statuscode if name length is invalid', async () => {
-    //     console.log('todo')
+        const usersAtEnd = await helper.usersInDb()
 
-    // })
+        expect(usersAtEnd).toHaveLength(usersAtStart.length)
+
+    })
+
+    test('creation fails with proper statuscode if no username', async () => {
+        const usersAtStart = await helper.usersInDb()
+
+        const userWithoutUsername = {
+            name: 'root-admin-user',
+            password: 'testpass123',
+            username: '',
+        }
+
+        await api
+            .post('/api/users')
+            .send(userWithoutUsername)
+            .expect(400)
+        const usersAtEnd = await helper.usersInDb()
+
+        expect(usersAtEnd).toHaveLength(usersAtStart.length)
+
+    })
+
+    test('creation fails with proper statuscode if no password', async () => {
+        const usersAtStart = await helper.usersInDb()
+
+        const userWithoutPassword = {
+            username: 'test-user',
+            password: '',
+            name: 'test-user-admin',
+        }
+
+        await api
+            .post('/api/users')
+            .send(userWithoutPassword)
+            .expect(400)
+
+        const usersAtEnd = await helper.usersInDb()
+
+        expect(usersAtEnd).toHaveLength(usersAtStart.length)
+
+    })
+
+    test('creation fails with proper statuscode if no data', async () => {
+        console.log('todo')
+
+    })
+    test('creation fails with proper statuscode if username length is invalid', async () => {
+        console.log('todo')
+
+    })
+    test('creation fails with proper statuscode if password length is invalid', async () => {
+        console.log('todo')
+
+    })
+    test('creation fails with proper statuscode if name length is invalid', async () => {
+        console.log('todo')
+
+    })
 })
